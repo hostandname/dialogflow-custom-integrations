@@ -198,8 +198,7 @@ function deleteSubscription() {
 }
 
 app.post('/', async function(req, res) {
-  if (Array.isArray(req.body.direct_message_events) &&
-      req.body.direct_message_events.length>0) {
+  if (Array.isArray(req.body.direct_message_events) && req.body.direct_message_events.length>0) {
     const message = req.body.direct_message_events[0];
     const text = message.message_create.message_data.text;
     const senderId = message.message_create.sender_id;
@@ -208,18 +207,17 @@ app.post('/', async function(req, res) {
           text, senderId, message)).fulfillmentText;
       sendMessage(dialogflowResponse, senderId);
     }
-  } else if (Array.isArray(req.body.tweet_create_events) &&
-      req.body.tweet_create_events.length>0) {
-    const message = req.body.tweet_create_events[0];
-    const text = message.text;
-    const senderId = message.user.id_str;
-    if (senderId!==twitterId && message.in_reply_to_user_id_str) {
-      let dialogflowResponse = (await sessionClient.detectIntent(
-          text, senderId, message)).fulfillmentText;
-      const screenName = message.user.screen_name;
-      dialogflowResponse = '@'+screenName+' '+dialogflowResponse;
-      sendStatus(dialogflowResponse, senderId);
-    }
+//   } else if (Array.isArray(req.body.tweet_create_events) && req.body.tweet_create_events.length>0) {
+//     const message = req.body.tweet_create_events[0];
+//     const text = message.text;
+//     const senderId = message.user.id_str;
+//     if (senderId!==twitterId && message.in_reply_to_user_id_str) {
+//       let dialogflowResponse = (await sessionClient.detectIntent(
+//           text, senderId, message)).fulfillmentText;
+//       const screenName = message.user.screen_name;
+//       dialogflowResponse = '@'+screenName+' '+dialogflowResponse;
+//       sendStatus(dialogflowResponse, senderId);
+//     }
   }
 });
 
